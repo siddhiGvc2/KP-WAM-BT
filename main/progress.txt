@@ -1,0 +1,431 @@
+/*     
+
+260425
+connected_to_wifi_and_internet
+connected_to_wifi
+
+In Publish message of Mqtt aded '*' with SerialNumber & Message.
+Led State pins changes for MQTT_DISCONNECTED
+Publisher_Task bug solved.
+
+
+
+wifi sequence
+Connect WiFi at Power On
+
+** repeat for next SSID
+Trying to connect to SSID1
+*** repeat next 3 lines - this is in event handler
+Connect WiFi after disconnection
+retry to connect to the AP
+connect to the AP fail 
+
+failed to connect to SSID
+returning from connecting 2 wifi
+
+
+What is happening
+1 Try 3 times
+2 try 3 times
+3 try 3 times
+
+what clients needs
+Try 1
+Try 2
+Try 3
+
+Try above sequence for 10 times
+
+
+
+Challenge -once wifi disconnected, it does not sense that and change status
+s2pinit if added will set a test output , normally keep it off
+UART2 not yet tested/not working
+wifi/server disconnection to be tested
+
+
+170425
+added *POWERON# command sent to MQTT at power on.
+added TCP off/on time
+added *TCP-OK# and *TCP-NOTOK# command
+
+040125
+added *STATUS?# command in main/src/anaysePacketUart.c/process_uart_packet
+
+
+030125
+added *QR:string# command in  main/src/anaysePacketUart.c/process_uart_packet
+added *QR?# command in  main/src/anaysePacketUart.c/process_uart_packet
+
+
+020125
+added *QR:string# command in  main/src/anaysePacketTcp.c/tcpip_client_task
+added *QR?# command in  main/src/anaysePacketTcp.c/tcpip_client_task
+
+
+30-12-24
+removed restart if HBT not received.
+
+25-12-24
+*HBT# command added in tsp.
+
+
+201224
+In CC: command saved Unix Timestamp in tcp.
+CC? command added in tcp.
+
+091224
+Default Time Stamp changed to 1733663095 as request by Prashant Ji
+New command added *VS?#
+reply as *VS,user id, 1/0#
+
+Time : no time limit - till next V command
+Pulse width : 50 msec - 200 msec
+Resonse 1 - received. 0 - not received
+User ID - sent as received in last V command
+Plan code - drop
+
+
+031224
+added *D:uniquetimestamp# command in tcp, uart an mqtt.
+sent uniquetimestamp in TC? response.
+added *D?# command in tcp,uart,mqtt.
+
+
+060924
+debounce count changed from 5 to 3 so that even 25 msec pulses can be capatured.
+040924
+default value of Pulsewidth set to 100 as requested by Neeraj Bhatia
+
+
+300824
+if PT:N then do not forward incoming pulses to output
+
+290824
+1. Allow Setting serial number from TCP if number is 999999
+2. if number is 4003 then make it NA-1507-4003
+3. added PT: PT? added in tcp and uart
+
+290824
+bug of *SIP:X# in UART solved. SIPNumber was integer but handled as string and that was causing error 
+
+170824
+ERASE command syntax changed , ERASE? added
+1. If less parameters do not erased and return erase - error - done
+2. If serial number of erase command not matching with device serial number then do not erase - done
+3. After erase command save serial number as in erase command - done
+4. Remove *SN : command from TCP- done
+5. Change SIP command. Only 1/2/3 is sent and saved old *SIP:X:Y:UR:#  new *SIP:X:Y:SIPNUMBER 1/2/3# 
+    If 1 then set SIP as URL 1 , if 2 then set SIP as URL 2 , If 3 then set SIP as URL3  - done
+
+
+Change in LEDs blinking - 
+ESP Touch in progress, waiting for esp touch, 
+waiting for wifi 1, waiing for wifi 2, waiting for wifi3
+fota in progress
+command received
+reply sent
+
+LR and LC commands
+
+070824
+
+change LED blinking pattern when searching for wifi - green led should be on
+
+prodction ip address added
+restart time increased
+bug of LED not blinking solved when wifi disconnected
+
+1.SS: - storing of SSID1
+  PW: - storing of SSID1
+  other ss and pw removed
+2. When esp-touch , ssid and password stored in SSID3,PWD3
+
+
+060824
+if edges or PulseStoppedDelay !=0 then do not restart
+Check led pulses
+if les_state is wait4restart, wait 4 esp touch , wait 4 jumper removal then do not allow any other condition
+
+
+030824
+split FOTA
+esp touch - wait for connector removal
+
+020824
+wifi - 1/2/3 X 20 times before restart at power on
+once connected then try 20 times same wifi.
+20 is set in def.h
+
+
+30724
+TID & LastTid stored as in buffer.
+
+
+260724
+1.SN added with userName .
+2.username set Local in uart.
+3.SN command added in mqttRoutine.
+
+250724
+Add MQTTRequired
+remove MAC and HBT on UART 
+
+240723
+1.nvs recalled for SerialNumber.
+2.SN: ,SN? commands added in tcp.
+3. In mqttp subscribe topic is replaced with GVC/KP/SerialNumber.
+4. in SS: set ssid with 3 parameters if 3 parameters is not given then send error message.
+5. Nvs recalled for all username and dateTime.
+6. for SS1:,SS2:,PW:,PW1:,PW2: error message send if parameters are not correct.
+7. for Ca & URl also error message added.
+
+
+
+230724
+Add a test functions
+in Test function - disable local tranfer of signals
+Test function added in UART also.
+
+230724
+SN: , SN? commands added only in UART.
+Displayed MacId and HBT command in UART also.
+
+190724
+remove MQTT - DONE
+Make LED permanently on when connected - DONE
+blink Red LED when connecting to wifi/server - DONE
+After ESP TOUCH freeze / restart Device - PENDING
+Remove INH Functionality (defauly Vend enabled) - DONE
+Remove CA functionality of reverse polarity (defauly 0) - done by Jugaad , making Signal Polarity 0 
+after reading and 0 while setting
+BUG : Not being set in UART - DONE
+if Server not found - restart after X tries
+
+
+120724T1
+make green led always on 
+pulse R-G-B Led at power on
+Green LED is always on
+removed MQTT
+Siddhi
+
+050724T1
+1.ESP_LOGI incoming messages from mqtt.
+2. SIP: ,SIP?,RST,CC,UR? commands added in mqtt.
+3. CA? , SS: ,INH?,INH:commands added in mqtt.
+4. CA:, SS1:,PW,PW1 commands added in mqtt.
+5. URL: , SSID? ,ERASE ,RESTART commands added in mqtt.
+6. V: , SL: ,TV? , TC? ,FW? commands added in mqtt.
+7.Fota command also added in mqtt.
+8.SS2: ,PW2:, SP:  also added in mqtt.
+
+040724T1
+Added first trial of MQTT sending some thing
+
+010724T1
+made 4MB variant
+changed default address to kwikpay server
+jmper server to GVC
+
+27062024
+1.Ensure that all query commands are replied with username as date in same as received in last command.
+2.UART query replies with username and date as in TCP query.
+3.In UART setting, user name and date is not required, but save user name as “LOCAL” and date as localdate variable  for example
+
+
+
+1. Retry in case of wifi error
+2. Retry in case of server disconnection
+3. Send data to UART2 for debugging
+4. Add MQTT
+5. Add logs
+
+1445 - started working. picked up simple task
+170624T1
+when pulses received - recreate again. added in GPIO_read_n_act
+checked and demoed to siddhi
+
+130624T1
+1. Start Smartconfig if Jumper2 is pressed else continue as normal
+2. When ssid and password detected then save in NVRAM
+3. Rest exmaple code copied
+4. Able to scan and save ESP TOUCH SSID and PASSWORD and save in memory
+4. Trying to connect ssid3
+
+120624T1
+added ESP-TOUCH
+to be called only in Test Mode
+SSID 1/2 were already there. Now 3 also added
+
+
+070624T1
+added following commands to uart
+*CC# , *FW?# ,*V: , *SL: , *CA?# , *CA: ,*FOTA#
+
+060624
+UART2 some correction made
+UART2 Working
+FOTA Working
+
+270524
+add erase function when BOOT switch pressed for 2 seconds
+boot is IO0
+
+
+
+
+230524
+INH saved in memory
+*MAC: when KP Server
+*MAC, when GVC Server
+
+200521
+adding commands to set and read INH status
+*INH:0# or *INH:1# 
+reply *INH-DONE,x#
+save value in INHPOutputValue
+ESP IO 14 is CINHO (reverse polarity)
+demo done
+while doing fota also send FOTA URL to server 
+display*FOTA-OVER# at end
+
+
+
+*INH?#
+reply *INH,0# or *INH,1#
+display from INHInputValue
+IO23 is INHInput
+
+160524T1
+FOTA commands * and # added
+
+110524T1
+copied WiFi code from example 
+ESP_RETRY_GAP added
+When socket connected send *WiFi X# where x is wifi number
+
+090525T1
+
+080524T4
+
+0805T3
+retry wifiif disconnected, not working
+saved 
+
+0805T2
+if wifi disconnected - do not try socket connection
+
+0805T1
+
+added * and # on SSID commands
+
+0705T3
+working and socket connected
+
+050424T1
+new command added to save Port in case of Jumper
+*SP:xxxx# and save 
+when using jumper, use GVC server and port as set using SP command
+else use server and port as set by SIP command
+
+RTOS Frequency changes from 100Hz to 200 Hz
+some bugs removed
+
+
+
+040524T3
+ignore pulses of width less than 30 msec
+
+040524T2
+Sense pulse width of some minimum value - so if CA is set as 50 - ignore pulse of width 25
+checked readNActDelay. Added led blinking and one ESP_LOGI  for testing 
+
+
+040524T1
+have variable size pulses - done
+
+020524T1
+
+
+010524T2
+small bug of CA values correctd
+capture multiple pulses
+Tested by Prashant
+
+
+010524T1
+adding memorising CA and totals parameters
+working 
+
+
+300424T2
+send reply to server when input pulse sensed -worked
+send totals is now two command *TV and *TC
+*TC for cash
+*TV for V commands
+(6603 V command becomne Coins for 6666)
+
+
+300424T1
+Added *CA:pulsewidth:PolarityCommand)
+polarity 0 means active low output
+polarity 1 means actibe high output
+working
+Input pulses being senses
+
+
+
+210424
+When V command is received pulse L1
+when coin are sensed pulse L2
+when reply is sent pulse L3
+
+output pins configured
+CH 1/ CH5 tested
+CH 3 pulses okay but low voltage
+CH 7 pulses okay but low voltage
+CH 4 okay
+CH 2 okay
+
+
+
+190424
+*V:TID:Plan:Pulses#
+skip duplicate TID
+*TC?# added
+
+
+180424B
+Added RST command
+180424
+blink one LED when packet received
+Blick second LED when HBT Sent
+*HBT,MACID#
+160424C
+MAC Address is actual
+addimg *FW?#
+160424B Led command being added, Jumper sense added
+*SL:x:y# added, set light x is 1/2/3 y is 0/1
+160424A - SIP command tested
+090324A - *GP1:7# working okay
+070324B - decode x and y from *GP:x:y# and then generate pulses
+070324A - get command from server *GP:x:y# where x is pin and y is number of pulses
+change *Tx:y# to *TP:x:y#
+060324C -count number of pulses within two second and send to server as *Px:y# where x is pin number and y is pulses
+060324B -count number of pulses within one second
+060324A - send pulse sense to socket send *Px# where x is number
+060324 - check led styles
+led blinks 1/2/3/4 times every 2 seconds as per status. This makes it easy to detect status. 
+fast/slow blink does not work 
+input sense working well and displaying status when input pin changes status
+
+020324D -socket does not work with vending-iot.com but works with 163.232.177.23
+able to connect and send MAC address
+Checked with nc - l 6666 command
+also data sent from server is received and displayed on ESP_LOGI
+
+020324D - working 4094 and 3 LEDs test mode 020324D
+020324C - working 4094 test mode 020324C
+
+*/
