@@ -121,4 +121,7 @@ extern void DisplayGameOverValues (void);
 extern void StartPlaySoundRoutine(void);
 
 
+extern void BLE_main(void);
+extern void SendBTData (void);
+
 

@@ -153,6 +153,7 @@ void app_main(void)
     utils_nvs_init();
     status_leds_init();
     console_uart_init();
+     BLE_main();
     
     if(UartDebugInfo)
        uart_write_string(FWVersion);
@@ -205,7 +206,7 @@ void app_main(void)
    // Create monitor task
    // xTaskCreate(hbt_monitor_task, "hbt_monitor_task", 2048, NULL, 5, NULL);
     xTaskCreate(heap_monitor_task, "heap_monitor", 2048, NULL, 5, NULL);
-    
+    xTaskCreate(SendBTData, "SendBT_task", 2048, NULL, 5, NULL);
     xTaskCreate(date_time_task, "date_time_task", 2048, NULL, 5, NULL);
     xTaskCreate(SendTCcommand,"SendTCcommand", 8192, NULL, 6, NULL);
     xTaskCreate(TestCoin, "TestCoin", 8192, NULL, 6, NULL);
