@@ -22,6 +22,12 @@
  
  #include "time.h"
  #include "sys/time.h"
+ 
+#define DefaultBTName "GVC-BT"
+
+#include "externVars.h"
+// #include "calls.h"
+
 
 
 #define SPP_TAG "SPP_ACCEPTOR_DEMO"
@@ -30,7 +36,7 @@
 #define SPP_SHOW_SPEED 1
 #define SPP_SHOW_MODE SPP_SHOW_SPEED    /*Choose show mode: show data or speed*/
 
-static const char local_device_name[] = CONFIG_EXAMPLE_LOCAL_DEVICE_NAME;
+// static const char local_device_name[] = CONFIG_EXAMPLE_LOCAL_DEVICE_NAME;
 static const esp_spp_mode_t esp_spp_mode = ESP_SPP_MODE_CB;
 static const bool esp_spp_enable_l2cap_ertm = true;
 
@@ -41,6 +47,7 @@ static const esp_spp_sec_t sec_mask = ESP_SPP_SEC_AUTHENTICATE;
 static const esp_spp_role_t role_slave = ESP_SPP_ROLE_SLAVE;
 
 uint32_t bt_handle;
+
 static char *bda2str(uint8_t * bda, char *str, size_t size)
 {
     if (bda == NULL || str == NULL || size < 18) {
@@ -93,7 +100,10 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
         if (param->start.status == ESP_SPP_SUCCESS) {
             ESP_LOGI(SPP_TAG, "ESP_SPP_START_EVT handle:%"PRIu32" sec_id:%d scn:%d", param->start.handle, param->start.sec_id,
                      param->start.scn);
-            esp_bt_gap_set_device_name(local_device_name);
+            strcpy(payload,DefaultBTName);
+            strcat (payload,SerialNumber);
+            esp_bt_gap_set_device_name(payload);
+         
             esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
         } else {
             ESP_LOGE(SPP_TAG, "ESP_SPP_START_EVT status:%d", param->start.status);
@@ -127,6 +137,7 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
     case ESP_SPP_SRV_OPEN_EVT:
         ESP_LOGI(SPP_TAG, "ESP_SPP_SRV_OPEN_EVT status:%d handle:%"PRIu32", rem_bda:[%s]", param->srv_open.status,
                  param->srv_open.handle, bda2str(param->srv_open.rem_bda, bda_str, sizeof(bda_str)));
+        bt_handle = param->srv_open.handle;
         gettimeofday(&time_old, NULL);
         bt_handle = param->srv_open.handle;
         break;
@@ -200,20 +211,13 @@ void esp_bt_gap_cb(esp_bt_gap_cb_event_t event, esp_bt_gap_cb_param_t *param)
 }
 
 
-void SendBTData (void)
+void SendBTData (const char *message)
 {
     char payload[100];
-    int Count,len;
-    Count = 0;
-    while(1) {
-    
-    Count++;
-    sprintf(payload,"Hello BT Demo %d",Count);
+    int len;
+    strcpy(payload,message);
     len = strlen(payload);
-     esp_spp_write(bt_handle,len,(uint8_t *)payload);
-     vTaskDelay(pdMS_TO_TICKS(1000));
-  }
-    
+    esp_spp_write(bt_handle,len,(uint8_t *)payload);    
 }
 
 void BLE_main(void)

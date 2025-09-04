@@ -12,7 +12,7 @@
 #define ImageBatteryOver 5
 #define ImageDoorOpening 6
 
-
+#define DefaultBTName "GVC-BT-"
 
 
 //#define GVCOptionRequired 0

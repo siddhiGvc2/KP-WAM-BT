@@ -1,3 +1,6 @@
+## 040925
+BT code working
+
 ## 120825
 add BT
 what is received from BT - treat it as command.
