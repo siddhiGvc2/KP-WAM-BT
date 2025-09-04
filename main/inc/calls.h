@@ -122,6 +122,6 @@ extern void StartPlaySoundRoutine(void);
 
 
 extern void BLE_main(void);
-extern void SendBTData (void);
+extern void SendBTData (const char *);
 
 

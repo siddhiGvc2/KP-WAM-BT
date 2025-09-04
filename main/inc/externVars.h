@@ -254,7 +254,7 @@ extern int SoundMode;  // 0 - off, 1 - on, 2 - on with sound, 3 - on with sound 
 extern bool NODEBUG;                      
 
 
-
+extern int BTconnected;
 
 
 

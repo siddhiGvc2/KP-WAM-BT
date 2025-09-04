@@ -103,7 +103,7 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
             strcpy(payload,DefaultBTName);
             strcat (payload,SerialNumber);
             esp_bt_gap_set_device_name(payload);
-         
+            
             esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
         } else {
             ESP_LOGE(SPP_TAG, "ESP_SPP_START_EVT status:%d", param->start.status);
@@ -138,10 +138,12 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
         ESP_LOGI(SPP_TAG, "ESP_SPP_SRV_OPEN_EVT status:%d handle:%"PRIu32", rem_bda:[%s]", param->srv_open.status,
                  param->srv_open.handle, bda2str(param->srv_open.rem_bda, bda_str, sizeof(bda_str)));
         bt_handle = param->srv_open.handle;
+        BTconnected=1;
         gettimeofday(&time_old, NULL);
         bt_handle = param->srv_open.handle;
         break;
     case ESP_SPP_SRV_STOP_EVT:
+        BTconnected=0;
         ESP_LOGI(SPP_TAG, "ESP_SPP_SRV_STOP_EVT");
         break;
     case ESP_SPP_UNINIT_EVT:
@@ -211,13 +213,17 @@ void esp_bt_gap_cb(esp_bt_gap_cb_event_t event, esp_bt_gap_cb_param_t *param)
 }
 
 
-void SendBTData (const char *message)
+void SendBTData(const char *message)
 {
+        if(BTconnected) 
+        {
+          
     char payload[100];
     int len;
     strcpy(payload,message);
     len = strlen(payload);
     esp_spp_write(bt_handle,len,(uint8_t *)payload);    
+        }
 }
 
 void BLE_main(void)

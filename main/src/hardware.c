@@ -29,6 +29,7 @@
 
 #include "externVars.h"
 #include "calls.h"
+
 static const char *TAG = "HW";
 static QueueHandle_t uart0_queue;
 
@@ -70,6 +71,9 @@ void GameOverRoutine (void)
                 uart_write_string_ln(payload);                
                 strcpy(payload,"*Status,STOP#");
                 mqtt_publish_msg(payload);
+      
+                SendBTData(payload);
+        
                 Out4094(9);
                 BuzzerGameOver();
               //  DisplayDigit4(0,0,WrongSwitchPressedCount);
@@ -94,7 +98,12 @@ void StartGameRoutine (void)
         if(MQTT_CONNEECTED)
         {
             mqtt_publish_msg(payload);
-        }  
+
+        } 
+        if(BTconnected) 
+        {
+            SendBTData(payload);
+        }
         Init6961();
         if (GameMode > 0)
         {
@@ -162,6 +171,7 @@ void RunGameMode1 (void)
                             {
                                 mqtt_publish_msg(payload);
                             }
+                             SendBTData(payload);
                             SwitchOnNextLight();
 
 }
@@ -201,6 +211,7 @@ void RunGameMode0 (void)
                             {
                                 mqtt_publish_msg(payload);
                             }
+                             SendBTData(payload);
 
 }
 

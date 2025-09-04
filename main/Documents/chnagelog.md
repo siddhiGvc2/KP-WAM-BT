@@ -1,7 +1,12 @@
 ## 040925
+-- send messages to BT also apart from TCP/MQTT
+
+## 040925
 BT code working
 Same Led Blink should not repeat.
 Number Of Lights set -8
+software version 130
+
 
 
 ## 120825

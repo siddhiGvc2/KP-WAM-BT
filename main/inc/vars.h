@@ -249,3 +249,5 @@ uint64_t current_time_us;
 uint32_t elapsed_ms,last_elapsed_ms,last_audio_ms;
 int SoundMode;  // 0 - off, 1 - on, 2 - on with sound, 3 - on with sound and vibration                        
 bool NODEBUG;
+
+int  BTconnected=0;
