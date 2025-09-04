@@ -170,7 +170,7 @@ void load_settings_nvs(){
         utils_nvs_get_int(NVS_TOTAL_LIGHTS,&NumberOfLights); 
       }
       else
-        NumberOfLights = 7;
+        NumberOfLights = 8;
         
       if(utils_nvs_get_str(NVS_MQTT_USER1,mqtt_user1,100) == ESP_OK){
         utils_nvs_get_str(NVS_MQTT_USER1,mqtt_user1,100);

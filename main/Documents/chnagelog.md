@@ -1,5 +1,8 @@
 ## 040925
 BT code working
+Same Led Blink should not repeat.
+Number Of Lights set -8
+
 
 ## 120825
 add BT

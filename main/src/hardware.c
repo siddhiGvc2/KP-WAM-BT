@@ -329,8 +329,11 @@ void Out4094Byte (unsigned char value)
 void SwitchOnNextLight (void)
 {
     char payload[50];
+     int y;
+    do{
     int x = esp_random();
-    int y = abs(x % NumberOfLights) + 1;
+    y = abs(x % NumberOfLights) + 1;
+    }while(y==SelectedLEDNumber);
     SelectedLEDNumber = y;
     Out4094(y);
     LightOnTime = millis(); // get start time
