@@ -153,7 +153,7 @@ void app_main(void)
     utils_nvs_init();
     status_leds_init();
     console_uart_init();
-     BLE_main();
+  
     
     if(UartDebugInfo)
        uart_write_string(FWVersion);
@@ -165,7 +165,8 @@ void app_main(void)
     //sscanf(rx_buffer, "*GTime:%d#",&GapBeforeNextLight);
     sscanf(SerialNumber,"NA-1507-%d",&NumericSerialNumnber);
 
-
+    BLE_main();
+    
     ESP_LOGI(TAG, "*Starting ICH#");
     ICH_init();
     ESP_LOGI(TAG, "*Starting S2P#");

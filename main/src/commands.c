@@ -75,6 +75,10 @@ void SendResponse(const char *Message,const char *OutputVia)
                uart_write_string_ln(Message);
         }
     }
+    else if(strcmp(OutputVia,"BT")==0)
+    {
+        SendBTData(Message);
+    }
 }
 
 
@@ -1250,13 +1254,15 @@ if(strcmp(InputVia,"TCP")==0)
     }
      else if(strncmp(rx_buffer,"*MAXGAMES:",10)==0)
     {
-    
+        if(strcmp(InputVia,"BT")!=0)
+        {
         sscanf(rx_buffer,"*MAXGAMES:%d#",&max_count);
 
         utils_nvs_set_int(NVS_MAXGAMES,max_count);
         sprintf(payload, "*MAXGAMES-OK,%d#",max_count);
         
         SendResponse(payload,InputVia); 
+        }
         
     }
      else if(strncmp(rx_buffer,"*COUNT-RESET#",16)==0)

@@ -1,5 +1,13 @@
+## 050925
+-- accept commands from BT like setting commands (snackboss:7070)
+except MAXGAMES
+-- MaxGames seeting command disabled from BT.
+
 ## 040925
 -- send messages to BT also apart from TCP/MQTT
+-- serial number bug corrected
+
+
 
 ## 040925
 BT code working

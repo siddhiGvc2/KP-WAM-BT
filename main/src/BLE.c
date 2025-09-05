@@ -23,7 +23,7 @@
  #include "time.h"
  #include "sys/time.h"
  
-#define DefaultBTName "GVC-BT"
+#define DefaultBTName "GVC-WAM"
 
 #include "externVars.h"
 // #include "calls.h"
@@ -100,8 +100,9 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
         if (param->start.status == ESP_SPP_SUCCESS) {
             ESP_LOGI(SPP_TAG, "ESP_SPP_START_EVT handle:%"PRIu32" sec_id:%d scn:%d", param->start.handle, param->start.sec_id,
                      param->start.scn);
-            strcpy(payload,DefaultBTName);
-            strcat (payload,SerialNumber);
+            // strcpy(payload,DefaultBTName);
+            // strcat (payload,SerialNumber);
+            snprintf(payload, sizeof(payload), "%s%s", DefaultBTName, SerialNumber);
             esp_bt_gap_set_device_name(payload);
             
             esp_bt_gap_set_scan_mode(ESP_BT_CONNECTABLE, ESP_BT_GENERAL_DISCOVERABLE);
@@ -125,6 +126,8 @@ static void esp_spp_cb(esp_spp_cb_event_t event, esp_spp_cb_param_t *param)
            size_t len = param->data_ind.len; // for example, if you have length
            memcpy(payload, param->data_ind.data, len);
             ESP_LOGI(SPP_TAG,"%s",payload);
+            strcpy(InputVia,"BT");
+             AnalyzeInputPkt(payload,InputVia);
             esp_log_buffer_hex("", param->data_ind.data, param->data_ind.len);
         }
         break;
