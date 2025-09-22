@@ -138,22 +138,34 @@ void StartGameRoutine (void)
 
 void RunGameMode2 (void)
 {
-    uint8_t i,j,k;
+    uint8_t i,j,k,m;
     j = 0;
     k = 0;
+    ESP_LOGI(TAG,"%s","Calculating Game Mode 2 Sequence");
     for (i = 0 ; i < 8 ; i++)
     {
-        while (j == k)
+        MemorySequence[i] = 0;
+    }    
+    for (i = 0 ; i < 8 ; i++)
+    {
+        k = 1;
+        while (k != 0)
         {
             j = esp_random() % NumberOfLights;
             k = MemorySequence[j];
-            j = 0;
         }
-        MemorySequence[i] = k+1;
-        k = 0;
-        sprintf(payload,"GameMod2 Numbers : %d,%d",i,MemorySequence[i]);
+        MemorySequence[j] = i+1;
+        sprintf(payload,"GameMod2 Numbers : %d",j);
         ESP_LOGI(TAG,"%s",payload);
     }
+    for(i = 0 ; i < 8 ; i++)
+    {
+        Out4094(MemorySequence[i]);
+        vTaskDelay(1000/portTICK_PERIOD_MS);
+        Out4094(9);
+        vTaskDelay(300/portTICK_PERIOD_MS);
+    }
+
 }
 
   void RunGameMode1 (void)
