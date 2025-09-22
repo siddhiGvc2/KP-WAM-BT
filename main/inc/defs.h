@@ -235,8 +235,8 @@ typedef enum TCPIP_SOCKET_STATE{
 
 #define PASS_THRU   "Y"
 
-#define FWVersion "*KP-WAM - 040925 #"
-#define NumericFWVersion 130
+#define FWVersion "*KP-WAM - 220925 #"
+#define NumericFWVersion 131
 
 
 

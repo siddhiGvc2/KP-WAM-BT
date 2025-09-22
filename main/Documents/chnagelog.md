@@ -1,3 +1,6 @@
+## 220925
+-- create random number in a table of MemorySequence
+
 ## 050925
 -- accept commands from BT like setting commands (snackboss:7070)
 except MAXGAMES

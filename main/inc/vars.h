@@ -251,3 +251,4 @@ int SoundMode;  // 0 - off, 1 - on, 2 - on with sound, 3 - on with sound and vib
 bool NODEBUG;
 
 int  BTconnected=0;
+int MemorySequence[8];

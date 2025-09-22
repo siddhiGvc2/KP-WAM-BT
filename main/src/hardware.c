@@ -105,7 +105,7 @@ void StartGameRoutine (void)
             SendBTData(payload);
         }
         Init6961();
-        if (GameMode > 0)
+        if (GameMode ==  1)
         {
         for (int i = 0 ; i < 4 ; i++)
         {
@@ -116,9 +116,13 @@ void StartGameRoutine (void)
         }
         SwitchOnNextLight();
         }
-        else
+        else if (GameMode == 0)
         {
             RunGameMode0();            
+        }
+        else if (GameMode == 2)
+        {
+            RunGameMode2();            
         }
         RemainingTime = PlayTime*60;
         DisplayRemainingTime();
@@ -131,7 +135,28 @@ void StartGameRoutine (void)
 }
 
   char payload[100];
-void RunGameMode1 (void)
+
+void RunGameMode2 (void)
+{
+    uint8_t i,j,k;
+    j = 0;
+    k = 0;
+    for (i = 0 ; i < 8 ; i++)
+    {
+        while (j == k)
+        {
+            j = esp_random() % NumberOfLights;
+            k = MemorySequence[j];
+            j = 0;
+        }
+        MemorySequence[i] = k+1;
+        k = 0;
+        sprintf(payload,"GameMod2 Numbers : %d,%d",i,MemorySequence[i]);
+        ESP_LOGI(TAG,"%s",payload);
+    }
+}
+
+  void RunGameMode1 (void)
 {
 
                             KeysPressed++;
