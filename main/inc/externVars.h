@@ -256,6 +256,7 @@ extern bool NODEBUG;
 
 extern int BTconnected;
 extern int MemorySequence[8];
+extern int GameMode2Index;
 
 
 

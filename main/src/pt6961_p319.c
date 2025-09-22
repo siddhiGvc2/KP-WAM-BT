@@ -495,6 +495,17 @@ void DisplayStatus (void)
 
 void DisplayGameOverValues (void)
 {
+  // show active time
+  if (GameMode == 2)
+  {
+    DisplayDigit2(0,0,(PlayTime * 60 - RemainingTime)%60);
+    DisplayDigit2(2,0,(PlayTime * 60 - RemainingTime)/60);
+    OnSegment1(2,0,7);   
+  }
+  else
+  {
             DisplayDigit3(4,0,OKSwitchPressedCount);
             DisplayDigit4(0,0,WrongSwitchPressedCount);
-}
+
+  }
+}  

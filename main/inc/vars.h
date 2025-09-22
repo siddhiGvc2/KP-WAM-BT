@@ -252,3 +252,4 @@ bool NODEBUG;
 
 int  BTconnected=0;
 int MemorySequence[8];
+int GameMode2Index;

@@ -1,5 +1,10 @@
 ## 220925
--- create random number in a table of MemorySequence
+-- create random number in a table of MemorySequence  (11:45 - 15:45)
+-- dipslay table contents once
+
+-- accept values amd count error counts (15:45 - git )
+
+
 
 ## 050925
 -- accept commands from BT like setting commands (snackboss:7070)

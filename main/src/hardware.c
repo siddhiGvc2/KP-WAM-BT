@@ -122,6 +122,7 @@ void StartGameRoutine (void)
         }
         else if (GameMode == 2)
         {
+            GameMode2Index=0;
             RunGameMode2();            
         }
         RemainingTime = PlayTime*60;
@@ -165,6 +166,50 @@ void RunGameMode2 (void)
         Out4094(9);
         vTaskDelay(300/portTICK_PERIOD_MS);
     }
+
+}
+
+
+
+void RunGameMode2Check(void){
+    PinPressed = InputPin;
+    if(MemorySequence[GameMode2Index]==PinPressed)
+    {
+        OKSwitchPressedCount++;
+        GameMode2Index++;
+        Out4094(PinPressed);
+        if (GameMode2Index == 8)
+        {
+            GameOverRoutine();
+        }
+    }
+    else{
+        WrongSwitchPressedCount++;
+    }
+
+
+        sprintf (payload,"*Status,%d,%d,%d,%d,%d,%.1f,%.1f#",PinPressed,MemorySequence[GameMode2Index],OKSwitchPressedCount,WrongSwitchPressedCount,NoSwitchPressedCount,TimeToRespond/10.0,AverageTimeToRespond/10.0);
+        uart_write_string_ln(payload); 
+        if (GameNegativeMarking == 0)
+            DisplayDigit3(4,0,OKSwitchPressedCount);
+        else if (OKSwitchPressedCount >= WrongSwitchPressedCount)
+            DisplayDigit3(4,0,OKSwitchPressedCount- WrongSwitchPressedCount);
+        else if ((WrongSwitchPressedCount - OKSwitchPressedCount) < 100)
+        {
+            DisplayDigit2(4,0,WrongSwitchPressedCount - OKSwitchPressedCount);
+            DisplayDash(6,0,1);
+        }
+        else
+        {
+            DisplayDash(4,0,3);
+
+        }
+        if(MQTT_CONNEECTED)   
+        {
+            mqtt_publish_msg(payload);
+        }
+        SendBTData(payload);
+
 
 }
 
@@ -571,9 +616,9 @@ void gpio_read_n_act(void)
                             {
                                 RunGameMode0();        
                             }
-                            else 
-                            {                           
-                                RunGameMode1();        
+                            else if(GameMode==2)
+                            {      
+                                RunGameMode2Check();        
                             }
 
                         }
