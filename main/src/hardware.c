@@ -122,6 +122,13 @@ void StartGameRoutine (void)
         }
         else if (GameMode == 2)
         {
+            for (int i = 0 ; i < 4 ; i++)
+            {
+                Blank_digits(0,0,7);
+                vTaskDelay(500/portTICK_PERIOD_MS);
+                DisplayDigit1(4,0,3-i);
+                vTaskDelay(500/portTICK_PERIOD_MS);
+            }
             GameMode2Index=0;
             RunGameMode2();            
         }
@@ -139,9 +146,12 @@ void StartGameRoutine (void)
 
 void RunGameMode2 (void)
 {
+ 
     uint8_t i,j,k,m;
     j = 0;
     k = 0;
+    Blank_digits(0,0,7);
+    vTaskDelay(300/portTICK_PERIOD_MS);
     ESP_LOGI(TAG,"%s","Calculating Game Mode 2 Sequence");
     for (i = 0 ; i < 8 ; i++)
     {
@@ -161,18 +171,23 @@ void RunGameMode2 (void)
     }
     for(i = 0 ; i < 8 ; i++)
     {
+        DisplayDigit1(4,0,i+1);
         Out4094(MemorySequence[i]);
-        vTaskDelay(1000/portTICK_PERIOD_MS);
+        vTaskDelay(Mode2LightTime/portTICK_PERIOD_MS);
         Out4094(9);
         vTaskDelay(300/portTICK_PERIOD_MS);
     }
-
+    vTaskDelay(300/portTICK_PERIOD_MS);
+    DisplayDigit3(4,0,0);
+    vTaskDelay(300/portTICK_PERIOD_MS);
+ 
 }
 
 
 
 void RunGameMode2Check(void){
     PinPressed = InputPin;
+ 
     if(MemorySequence[GameMode2Index]==PinPressed)
     {
         OKSwitchPressedCount++;

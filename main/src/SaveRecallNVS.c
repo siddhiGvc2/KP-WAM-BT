@@ -123,7 +123,12 @@ void load_settings_nvs(){
      
       life_count=max_count-current_count;
       utils_nvs_set_int(NVS_LIFECOUNT,&life_count);
-  
+
+       if(utils_nvs_get_int(NVS_MODE2_TIME,&Mode2LightTime) == ESP_OK){
+        utils_nvs_get_int(NVS_MODE2_TIME,&Mode2LightTime);
+       
+      }
+      
       if(utils_nvs_get_int(NVS_GAME_MODE,&GameMode) == ESP_OK){
         utils_nvs_get_int(NVS_GAME_MODE,&GameMode);
        

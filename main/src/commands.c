@@ -1323,6 +1323,18 @@ if(strcmp(InputVia,"TCP")==0)
         sprintf(payload, "*SMode-OK,%d#",SoundMode);
         SendResponse(payload,InputVia); 
     }
+    else if(strncmp(rx_buffer,"*Mode2LT:",9)==0)
+    {
+         sscanf(rx_buffer,"*Mode2LT:%d#",&Mode2LightTime);
+        utils_nvs_set_int(NVS_MODE2_TIME,Mode2LightTime);
+        sprintf(payload, "*Mode2LT-OK,%d#",Mode2LightTime);
+        SendResponse(payload,InputVia); 
+    }
+    else if(strncmp(rx_buffer,"*Mode2LT?#",10)==0)
+    {
+          sprintf(payload, "*Mode2LT:%d#",Mode2LightTime);
+        SendResponse(payload,InputVia); 
+    }
     else{
         int l = strlen(rx_buffer);
         char buf[l+1];

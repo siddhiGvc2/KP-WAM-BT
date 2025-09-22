@@ -39,7 +39,8 @@
 #define SegN 0x320
 // T is seg d,e,f,g
 #define SegT 0x268
-
+// L is seg d,e,f
+#define SegL 0x68
 // same as 5
 #define SegS 0x358
 // same as 8 except d
@@ -469,9 +470,9 @@ void DisplayGSMode (void)
 // display game and time
 void DisplayTMode (void)
 {
-    DisplayDigit2(4,0,GameMode);
+    DisplayDigit2(4,0,Mode2LightTime);
     DisplaySegment1(5,0,SegDash);
-    DisplaySegment1(6,0,SegG);
+    DisplaySegment1(6,0,SegL);
 
     DisplayDigit2(0,0, PlayTime);
     DisplaySegment1(2,0,SegDash);
