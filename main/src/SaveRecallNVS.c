@@ -126,6 +126,11 @@ void load_settings_nvs(){
 
        if(utils_nvs_get_int(NVS_MODE2_TIME,&Mode2LightTime) == ESP_OK){
         utils_nvs_get_int(NVS_MODE2_TIME,&Mode2LightTime);
+        if(Mode2LightTime==0 || Mode2LightTime > MaximumLightTime)
+        {
+          Mode2LightTime=1;
+          utils_nvs_set_int(NVS_MODE2_TIME,Mode2LightTime);
+        }
        
       }
       
@@ -167,10 +172,16 @@ void load_settings_nvs(){
       
       if(utils_nvs_get_int(NVS_PLAY_TIME,&PlayTime) == ESP_OK)
       {
-        utils_nvs_get_int(NVS_PLAY_TIME,&PlayTime); 
+        utils_nvs_get_int(NVS_PLAY_TIME,&PlayTime);
+        if(PlayTime==0 || PlayTime > MaximumPlayTime) 
+        {
+          PlayTime=1;
+           utils_nvs_set_int(NVS_PLAY_TIME,PlayTime);
+        }
       }
       else
         PlayTime = 1;
+
       if(utils_nvs_get_int(NVS_TOTAL_LIGHTS,&NumberOfLights) == ESP_OK){
         utils_nvs_get_int(NVS_TOTAL_LIGHTS,&NumberOfLights); 
       }

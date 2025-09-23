@@ -130,6 +130,7 @@ void app_main(void)
     TCPRequired = 1;
     FirstTryMQTT = 1;
     FirstPowerOn = 1;
+    SettingButtonPressed=0;
 
     OKSwitchPressedCount=0;
     NoSwitchPressedCount=0;

@@ -45,12 +45,14 @@
 #define SegS 0x358
 // same as 8 except d
 #define SegA 0x738
-
+#define SegO 0x578
+#define SegU 0x568
 #define SegG 0x178
 static const char *TAG = "PT6961";
 
 #define SegT 0x268
 
+#define SegBlank 0x0
 //Din : MOSI
 //Dout : MISO
 
@@ -456,42 +458,116 @@ void DisplayWiFiStatus (void)
 }
 
 // display game and sound mode
-void DisplayGSMode (void)
+void DisplayGameMode (void)
 {
-    DisplayDigit2(4,0,GameMode);
-    DisplaySegment1(5,0,SegDash);
+    DisplayDigit2(4,0,SegBlank);
+    DisplaySegment1(5,0,SegA);
     DisplaySegment1(6,0,SegG);
+    DisplayDigit4(0,0,GameMode);
 
-    DisplayDigit2(0,0,SoundMode);
-    DisplaySegment1(2,0,SegDash);
-    DisplaySegment1(3,0,SegS);
+}
+
+void DisplaySoundMode (void)
+{
+    DisplaySegment1(4,0,SegU);
+    DisplaySegment1(5,0,SegO);
+    DisplaySegment1(6,0,SegS);
+    DisplayDigit4(0,0,SoundMode);
 }
 
 // display game and time
 void DisplayTMode (void)
 {
-    DisplayDigit2(4,0,Mode2LightTime);
-    DisplaySegment1(5,0,SegDash);
-    DisplaySegment1(6,0,SegL);
-
+    // DisplayDigit2(4,0,Mode2LightTime);
+    DisplaySegment1(4,0,SegDash);
+    DisplaySegment1(5,0,SegT);
+    DisplaySegment1(6,0,SegG);
     DisplayDigit2(0,0, PlayTime);
-    DisplaySegment1(2,0,SegDash);
-    DisplaySegment1(3,0,SegT);
+    
 }
+
+
+void DisplayMaxLights(void){
+    DisplaySegment1(4,0,SegDash);
+    DisplaySegment1(5,0,SegL);
+    DisplaySegment1(6,0,SegN);
+    DisplayDigit2(0,0,NumberOfLights);
+}
+
+void DisplayLightTime(void){
+    DisplaySegment1(4,0,SegDash);
+    DisplaySegment1(5,0,SegT);
+    DisplaySegment1(6,0,SegL);
+    DisplayDigit2(0,0,Mode2LightTime);
+}
+
 
 
 void DisplayStatus (void)
 {
-  DisplayWiFiStatus();
-  vTaskDelay(pdMS_TO_TICKS(2000));
-  DisplayRemainingCount();
-  vTaskDelay(pdMS_TO_TICKS(2000));
-  DisplayGSMode();
-  vTaskDelay(pdMS_TO_TICKS(2000));
-  DisplayTMode();
-  vTaskDelay(pdMS_TO_TICKS(2000));
-  DisplayDash(0,0,7);
+  SettingButtonPressed++;
+  if(SettingButtonPressed==1){
+    DisplayWiFiStatus();
+  }
+  else if(SettingButtonPressed==2)
+  {
+    DisplayRemainingCount();
+  }
+  else if(SettingButtonPressed==SettingGameMode)
+  {
+     DisplayGameMode();
+  }
+  else if(SettingButtonPressed==SettingSoundMode)
+  {
+     DisplaySoundMode();
+  }
+  else if(SettingButtonPressed==SettingPlayTime)
+  {
+     DisplayTMode();
+  }
+  else if(SettingButtonPressed==SettingNumberOfLights)
+  {
+    DisplayMaxLights();
+  }
+  else if(SettingButtonPressed==SettingLightTime)
+  {
+    DisplayLightTime();
+  }
+  else if(SettingButtonPressed== MaximumSettingNumber)
+  {
+      DisplayGameOverValues();
+      SettingButtonPressed = 0;
+      // memorise all values changed.
+      if (GameModeChanged)
+      {
+        GameModeChanged = 0;
+         utils_nvs_set_int(NVS_GAME_MODE,GameMode);
+        
+      }
+      else if(SoundModeChanged)
+      {
+        SoundModeChanged=0;
+         utils_nvs_set_int(NVS_SOUND_MODE,SoundMode);
+      }
+      else if(PlayTimeModeChanged)
+      {
+        PlayTimeModeChanged=0;
+        utils_nvs_set_int(NVS_PLAY_TIME,PlayTime);
+      }
+      else if(LightTimeModeChanged)
+      {
+        LightTimeModeChanged=0;
+        utils_nvs_set_int(NVS_MODE2_TIME,Mode2LightTime);
+      }
+      else if(LightSettingModeChanged)
+      {
+        LightSettingModeChanged=0;
+         utils_nvs_set_int(NVS_TOTAL_LIGHTS,NumberOfLights);
+      }
 
+
+  }
+ 
 }
 
 void DisplayGameOverValues (void)
@@ -499,6 +575,7 @@ void DisplayGameOverValues (void)
   // show active time
   if (GameMode == 2)
   {
+    DisplayDigit3(4,0,OKSwitchPressedCount);
     DisplayDigit2(0,0,(PlayTime * 60 - RemainingTime)%60);
     DisplayDigit2(2,0,(PlayTime * 60 - RemainingTime)/60);
     OnSegment1(2,0,7);   

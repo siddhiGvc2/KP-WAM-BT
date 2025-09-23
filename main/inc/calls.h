@@ -119,9 +119,14 @@ extern void DisplayWiFiStatus (void);
 extern void DisplayGameOverValues (void);
 
 extern void StartPlaySoundRoutine(void);
-
+extern void  IncrementParameterValue(void);
 
 extern void BLE_main(void);
 extern void SendBTData (const char *);
 
 
+extern void DisplayGameMode(void);
+extern void DisplaySoundMode(void);
+extern void  DisplayTMode(void);
+extern void DisplayLightTime(void);
+extern void DisplayMaxLights(void);

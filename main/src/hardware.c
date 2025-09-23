@@ -66,6 +66,7 @@ void GameOverRoutine (void)
 {
                 char payload[100];
                 GameOn = 0;
+            
                 Wait4NextGame = 6;
                 strcpy(payload,"********* Game Over ********");
                 uart_write_string_ln(payload);                
@@ -138,7 +139,7 @@ void StartGameRoutine (void)
     }
     else{
         ESP_LOGI(TAG,"GAME NOT STARTED DUE TO MAX LIMIT EXCEEDS");
-        DisplayStatus();
+        // DisplayStatus();
     }
 }
 
@@ -153,11 +154,11 @@ void RunGameMode2 (void)
     Blank_digits(0,0,7);
     vTaskDelay(300/portTICK_PERIOD_MS);
     ESP_LOGI(TAG,"%s","Calculating Game Mode 2 Sequence");
-    for (i = 0 ; i < 8 ; i++)
+    for (i = 0 ; i < NumberOfLights ; i++)
     {
         MemorySequence[i] = 0;
     }    
-    for (i = 0 ; i < 8 ; i++)
+    for (i = 0 ; i < NumberOfLights ; i++)
     {
         k = 1;
         while (k != 0)
@@ -169,11 +170,11 @@ void RunGameMode2 (void)
         sprintf(payload,"GameMod2 Numbers : %d",j);
         ESP_LOGI(TAG,"%s",payload);
     }
-    for(i = 0 ; i < 8 ; i++)
+    for(i = 0 ; i < NumberOfLights ; i++)
     {
         DisplayDigit1(4,0,i+1);
         Out4094(MemorySequence[i]);
-        vTaskDelay(Mode2LightTime/portTICK_PERIOD_MS);
+        vTaskDelay(Mode2LightTime*1000/portTICK_PERIOD_MS);
         Out4094(9);
         vTaskDelay(300/portTICK_PERIOD_MS);
     }
@@ -193,7 +194,7 @@ void RunGameMode2Check(void){
         OKSwitchPressedCount++;
         GameMode2Index++;
         Out4094(PinPressed);
-        if (GameMode2Index == 8)
+        if (GameMode2Index == NumberOfLights)
         {
             GameOverRoutine();
         }
@@ -475,9 +476,8 @@ void gpio_read_n_act(void)
             while (gpio_get_level(JUMPER2) == 0)
             {
                 DisplayStatus();
-                vTaskDelay(5/portTICK_PERIOD_MS);
+                vTaskDelay(1000/portTICK_PERIOD_MS);
             }
-            DisplayGameOverValues();
             break;
         }
  
@@ -637,11 +637,13 @@ void gpio_read_n_act(void)
                             }
 
                         }
-                        else if ((Wait4NextGame == 0) && (LocalGameEnable != 0))
+                        else if ((Wait4NextGame == 0) && (LocalGameEnable != 0) && (SettingButtonPressed == 0))
                         {
-                           
-                            StartGameRoutine();
-                            
+                            StartGameRoutine(); 
+                        }
+                        else if (SettingButtonPressed)
+                        {
+                            IncrementParameterValue();
                         }
                     }    
                 }

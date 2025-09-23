@@ -237,8 +237,8 @@ typedef enum TCPIP_SOCKET_STATE{
 
 #define PASS_THRU   "Y"
 
-#define FWVersion "*KP-WAM - 220925 #"
-#define NumericFWVersion 131
+#define FWVersion "*KP-WAM - 230925A #"
+#define NumericFWVersion 132
 
 
 
@@ -317,3 +317,20 @@ typedef enum TCPIP_SOCKET_STATE{
 
 #define StatusWiFiNotOk 0
 #define StatusWiFiOk 1
+
+#define SettingGameMode 3
+#define MaximumGameMode 3
+
+#define SettingSoundMode 4
+#define MaximumSoundMode 2
+
+#define SettingPlayTime 5
+#define MaximumPlayTime 4
+
+#define SettingLightTime 6
+#define MaximumLightTime 5
+
+#define SettingNumberOfLights 7
+#define MaximumNumberOfLights 8
+
+#define MaximumSettingNumber 8

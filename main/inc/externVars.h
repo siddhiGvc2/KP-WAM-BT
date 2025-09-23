@@ -258,7 +258,14 @@ extern int BTconnected;
 extern int MemorySequence[8];
 extern int GameMode2Index;
 extern int Mode2LightTime;
+extern int SettingButtonPressed;
 
+
+extern bool GameModeChanged;
+extern bool SoundModeChanged;
+extern bool PlayTimeModeChanged;
+extern bool LightTimeModeChanged;
+extern bool LightSettingModeChanged;
 
 
 

@@ -254,3 +254,12 @@ int  BTconnected=0;
 int MemorySequence[8];
 int GameMode2Index;
 int Mode2LightTime;
+int SettingButtonPressed;
+
+
+bool GameModeChanged;
+bool SoundModeChanged;
+bool PlayTimeModeChanged;
+bool LightTimeModeChanged;
+bool LightSettingModeChanged;
+
