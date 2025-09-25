@@ -94,6 +94,7 @@ void StartGameRoutine (void)
         TotalTimeToRespond  = 0;
         NoSwitchPressedCount = 0;
         strcpy(payload,"*************Start Game*************");
+        GameOn = 1;
         uart_write_string_ln(payload);    
         strcpy(payload,"*Status,START#");
         if(MQTT_CONNEECTED)
@@ -135,7 +136,6 @@ void StartGameRoutine (void)
         }
         RemainingTime = PlayTime*60;
         DisplayRemainingTime();
-        GameOn = 1;
     }
     else{
         ESP_LOGI(TAG,"GAME NOT STARTED DUE TO MAX LIMIT EXCEEDS");

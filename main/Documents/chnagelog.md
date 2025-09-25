@@ -1,3 +1,7 @@
+## 240925
+-- Display OTP - *OTP:1234#
+-- display OtP on top and OTP on bottom
+-- Resume *RESUME# - go back to standby mode
 ## 230925
 -- do setting from device 
 -- 1 When switch is pressed display nextvalue and not after fixed time

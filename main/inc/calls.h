@@ -130,3 +130,6 @@ extern void DisplaySoundMode(void);
 extern void  DisplayTMode(void);
 extern void DisplayLightTime(void);
 extern void DisplayMaxLights(void);
+
+extern void DisplayOTP (void);
+extern void DisplayNormal (void);

@@ -34,6 +34,7 @@
 #define LOW 0
 
 #define SegC 0x78
+#define SegP 0x638 // c d off
 #define SegDash 0x200
 // N is c,e,g
 #define SegN 0x320
@@ -502,6 +503,18 @@ void DisplayLightTime(void){
 }
 
 
+void DisplayOTP (void)
+{
+    DisplaySegment1(4,0,SegP);
+    DisplaySegment1(5,0,SegT);
+    DisplaySegment1(6,0,SegO);
+    DisplayDigit4(0,0,OTPValue);
+}
+
+void DisplayNormal (void)
+{
+  DisplayDash(0,0,7);
+}
 
 void DisplayStatus (void)
 {

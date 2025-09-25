@@ -263,3 +263,5 @@ bool PlayTimeModeChanged;
 bool LightTimeModeChanged;
 bool LightSettingModeChanged;
 
+int OTPValue;
+

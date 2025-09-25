@@ -151,6 +151,17 @@ if(strcmp(InputVia,"TCP")==0)
           SendResponse(payload,InputVia);  
           
         }
+        else if (SettingButtonPressed)
+        {
+          sprintf(payload, "*SETTING#");
+          SendResponse(payload,InputVia);  
+
+        }
+        else if (GameOn)
+        {
+          sprintf(payload, "*GAMEON#");
+          SendResponse(payload,InputVia);  
+        }
 //        else if(serverStatus==0)
         else if(IsSocketConnected==0)
         {
@@ -160,7 +171,7 @@ if(strcmp(InputVia,"TCP")==0)
         }
         else if(IsSocketConnected==1){
 //        else if(serverStatus==1){
-          sprintf(payload, "*QR:%s#",QrString); 
+          sprintf(payload,"*STANDBY#"); 
           SendResponse(payload,InputVia);
           
         }
@@ -1330,6 +1341,21 @@ if(strcmp(InputVia,"TCP")==0)
         sprintf(payload, "*Mode2LT-OK,%d#",Mode2LightTime);
         SendResponse(payload,InputVia); 
     }
+    else if(strncmp(rx_buffer,"*OTP:",5)==0)
+    {
+        sscanf(rx_buffer,"*OTP:%d#",&OTPValue);
+        sprintf(payload, "*OTP-OK,%d#",OTPValue);
+        SendResponse(payload,InputVia); 
+        DisplayOTP();
+    }
+    else if(strncmp(rx_buffer,"*NORMAL#",8)==0)
+    {
+        sprintf(payload, "*NORMAL-OK#");
+        SendResponse(payload,InputVia); 
+        DisplayNormal();
+    }
+
+
     else if(strncmp(rx_buffer,"*Mode2LT?#",10)==0)
     {
           sprintf(payload, "*Mode2LT:%d#",Mode2LightTime);

@@ -267,6 +267,8 @@ extern bool PlayTimeModeChanged;
 extern bool LightTimeModeChanged;
 extern bool LightSettingModeChanged;
 
+extern int OTPValue;
+
 
 
 
