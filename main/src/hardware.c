@@ -66,7 +66,7 @@ void GameOverRoutine (void)
 {
                 char payload[100];
                 GameOn = 0;
-            
+                GameOnTimeOn = 0;
                 Wait4NextGame = 6;
                 strcpy(payload,"********* Game Over ********");
                 uart_write_string_ln(payload);                
@@ -116,6 +116,7 @@ void StartGameRoutine (void)
             DisplayDigit1(4,0,3-i);
             vTaskDelay(500/portTICK_PERIOD_MS);
         }
+        GameOnTimeOn = 1;
         SwitchOnNextLight();
         }
         else if (GameMode == 0)
@@ -181,7 +182,7 @@ void RunGameMode2 (void)
     vTaskDelay(300/portTICK_PERIOD_MS);
     DisplayDigit3(4,0,0);
     vTaskDelay(300/portTICK_PERIOD_MS);
- 
+    GameOnTimeOn = 1;
 }
 
 

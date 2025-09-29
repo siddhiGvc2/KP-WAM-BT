@@ -231,7 +231,7 @@ extern int Ticks;
 extern unsigned int BlinlLEDTime;
 extern unsigned int OKSwitchPressedCount,NoSwitchPressedCount,WrongSwitchPressedCount;
 extern unsigned int PinPressed;
-extern bool GameOn;
+extern bool GameOn,GameOnTimeOn;
 extern unsigned int MissedCount; 
 extern unsigned int GapBeforeNextLight;
 extern unsigned int SelectedLEDNumber;

@@ -1,3 +1,9 @@
+## 290925
+-- new varibale added GameOnTimeOn.
+-- remainig time is displayed when this is set
+-- else when 1/2/3 is displayed, it was showing some wrong values
+
+
 ## 240925
 -- Display OTP - *OTP:1234#
 -- display OtP on top and OTP on bottom

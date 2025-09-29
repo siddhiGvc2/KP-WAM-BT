@@ -228,7 +228,7 @@ int Ticks = 0;
 unsigned int BlinlLEDTime;
 unsigned int OKSwitchPressedCount,NoSwitchPressedCount,WrongSwitchPressedCount;
 unsigned int PinPressed = 0;
-bool GameOn;
+bool GameOn,GameOnTimeOn;
 unsigned int MissedCount = 0; 
 unsigned int GapBeforeNextLight = 7;
 unsigned int SelectedLEDNumber;

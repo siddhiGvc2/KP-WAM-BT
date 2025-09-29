@@ -71,7 +71,7 @@ void Led_Task(void *pvParameters){
         }
         // program comes here after 1 second
         Ticks = Ticks + 1;        
-        if (GameOn)
+        if (GameOnTimeOn)
         {    
             /* code */
   //          DisplayDigit4(0,0,Ticks);
@@ -125,6 +125,7 @@ void app_main(void)
     char payload[100];
     GameNegativeMarking = 1;
     GameOn = 0;
+    GameOnTimeOn = 0;
     blinkLEDNumber = 0;
     MQTTRequired = 1;
     TCPRequired = 1;
