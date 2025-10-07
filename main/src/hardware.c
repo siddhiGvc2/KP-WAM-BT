@@ -69,14 +69,16 @@ void GameOverRoutine (void)
                 GameOnTimeOn = 0;
                 Wait4NextGame = 6;
                 strcpy(payload,"********* Game Over ********");
-                uart_write_string_ln(payload);                
-                strcpy(payload,"*Status,STOP#");
+                uart_write_string_ln(payload);  
+                
+                 strcpy(payload,"*Status,STOP#");
                 mqtt_publish_msg(payload);
       
                 SendBTData(payload);
         
                 Out4094(9);
                 BuzzerGameOver();
+              
               //  DisplayDigit4(0,0,WrongSwitchPressedCount);
 
 }
@@ -192,13 +194,15 @@ void RunGameMode2Check(void){
  
     if(MemorySequence[GameMode2Index]==PinPressed)
     {
+        blinkLEDNumber = LEDBUZZER; // beep if correct switch pressed
         OKSwitchPressedCount++;
         GameMode2Index++;
         Out4094(PinPressed);
-        if (GameMode2Index == NumberOfLights)
-        {
-            GameOverRoutine();
-        }
+        // removed from here on 071025 & added asfter last score sent
+        //    if (GameMode2Index == NumberOfLights)
+        // {
+        //     GameOverRoutine();
+        // }
     }
     else{
         WrongSwitchPressedCount++;
@@ -207,6 +211,18 @@ void RunGameMode2Check(void){
 
         sprintf (payload,"*Status,%d,%d,%d,%d,%d,%.1f,%.1f#",PinPressed,MemorySequence[GameMode2Index],OKSwitchPressedCount,WrongSwitchPressedCount,NoSwitchPressedCount,TimeToRespond/10.0,AverageTimeToRespond/10.0);
         uart_write_string_ln(payload); 
+        //071025
+        if(MQTT_CONNEECTED)   
+        {
+            mqtt_publish_msg(payload);
+        }
+        SendBTData(payload);
+
+          if (GameMode2Index == NumberOfLights)
+        {
+            GameOverRoutine();
+        }
+        //
         if (GameNegativeMarking == 0)
             DisplayDigit3(4,0,OKSwitchPressedCount);
         else if (OKSwitchPressedCount >= WrongSwitchPressedCount)
@@ -221,12 +237,7 @@ void RunGameMode2Check(void){
             DisplayDash(4,0,3);
 
         }
-        if(MQTT_CONNEECTED)   
-        {
-            mqtt_publish_msg(payload);
-        }
-        SendBTData(payload);
-
+        
 
 }
 
@@ -278,6 +289,7 @@ void RunGameMode2Check(void){
 void RunGameMode0 (void)
 {
                             KeysPressed++;
+                            blinkLEDNumber = LEDBUZZER; // been when any key is pressed
                             SwitchPressedTime = millis();
                             TimeToRespond = (SwitchPressedTime-LightOnTime)/100;
                             TotalTimeToRespond = TotalTimeToRespond + TimeToRespond;
@@ -630,6 +642,7 @@ void gpio_read_n_act(void)
                             }
                             else if (GameMode == 0)
                             {
+                                GameOnTimeOn = 1; // start count down timer
                                 RunGameMode0();        
                             }
                             else if(GameMode==2)

@@ -1,8 +1,13 @@
+## 071025
+version 071025A
+-- if GameModeIndex == NumberOflIGHTS & if last status is sent then callled GameOverRoutine
+
 ## 290925
 -- new varibale added GameOnTimeOn.
 -- remainig time is displayed when this is set
 -- else when 1/2/3 is displayed, it was showing some wrong values
-
+-- beep when any key is pressed in game 0
+-- beep when correct key is pressed in game 2
 
 ## 240925
 -- Display OTP - *OTP:1234#
