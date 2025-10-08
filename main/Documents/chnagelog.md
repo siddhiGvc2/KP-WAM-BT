@@ -1,3 +1,6 @@
+## 081025
+-- 1 second delay added before GameRoutine in GameMode2
+
 ## 071025
 version 071025A
 -- if GameModeIndex == NumberOflIGHTS & if last status is sent then callled GameOverRoutine

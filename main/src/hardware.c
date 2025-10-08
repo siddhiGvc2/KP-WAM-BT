@@ -218,10 +218,7 @@ void RunGameMode2Check(void){
         }
         SendBTData(payload);
 
-          if (GameMode2Index == NumberOfLights)
-        {
-            GameOverRoutine();
-        }
+      
         //
         if (GameNegativeMarking == 0)
             DisplayDigit3(4,0,OKSwitchPressedCount);
@@ -237,7 +234,11 @@ void RunGameMode2Check(void){
             DisplayDash(4,0,3);
 
         }
-        
+         vTaskDelay(1000/portTICK_PERIOD_MS); 
+            if (GameMode2Index == NumberOfLights)
+        {
+            GameOverRoutine();
+        }
 
 }
 
