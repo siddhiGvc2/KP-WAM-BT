@@ -261,6 +261,7 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
         if(UartDebugInfo)
            uart_write_string_ln( "MQTT_EVENT_ERROR");
         }
+        ESP_LOGI(TAG,"User Name - %s, Password - %s", mqtt_user,mqtt_pass);
         break;
 
     default:
@@ -270,32 +271,84 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 }
 
 
-void mqtt_app_start(void)
+// MQTTS
+
+/* Embedded CA certificate */
+extern const uint8_t ca_gvc_pem_start[] asm("_binary_ca_gvc_pem_start");
+extern const uint8_t ca_gvc_pem_end[]   asm("_binary_ca_gvc_pem_end");
+
+extern const uint8_t ca_provend_pem_start[] asm("_binary_ca_provend_pem_start");
+extern const uint8_t ca_provend_pem_end[]   asm("_binary_ca_provend_pem_end");
+
+extern const uint8_t ca_megavend_pem_start[] asm("_binary_ca_megavend_pem_start");
+extern const uint8_t ca_megavend_pem_end[]   asm("_binary_ca_megavend_pem_end");
+
+const char *ca_cert;
+
+void mqtt_app_start (void)
 {
-    ESP_LOGI(TAG, "STARTING MQTT");
-    if(UartDebugInfo)
-      uart_write_string_ln("STARTING MQTT");
-    esp_mqtt_client_config_t mqttConfig = {
-         .broker.address.uri = mqtt_uri,
-         .task.stack_size = 1024*10, 
-        .session.protocol_ver = MQTT_PROTOCOL_V_3_1_1,
-        .network.disable_auto_reconnect = false,
-        .credentials.username = mqtt_user,
-        .credentials.authentication.password = mqtt_pass,
-        .session.last_will.topic = "GVC/VM/00002",
-        .session.last_will.msg = "i will leave",
-        .session.last_will.msg_len = 12,
-        .session.last_will.qos = 1,
-        .session.last_will.retain = true,};
+    if(MipNumber==3) {
+    ca_cert = (const char *)ca_gvc_pem_start;
+    } 
+    else if(MipNumber==1)
+    {
+        ca_cert = (const char *)ca_megavend_pem_start;
+    }
+    else if(MipNumber==2)
+    {
+        ca_cert=(const char *)ca_provend_pem_start;
+    }
     
+    ESP_LOGI(TAG, "STARTING MQTT");
+    
+    esp_mqtt_client_config_t mqttConfig = 
+    {
+        .broker.address.uri = mqtt_uri,
+        .credentials = 
+        {
+            .username = mqtt_user,
+            .authentication.password = mqtt_pass,
+        },
+        .broker.verification.certificate = (const char *)ca_cert,
+    };
+
     client = esp_mqtt_client_init(&mqttConfig);
-    esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, client);
+    esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
     esp_mqtt_client_start(client);
     if(FirstTryMQTT== 1)
     {
-    InitMqtt();
+        InitMqtt();
     }
+    
 }
+
+// MQTT
+// void mqtt_app_start(void)
+// {
+//     ESP_LOGI(TAG, "STARTING MQTT");
+//     if(UartDebugInfo)
+//       uart_write_string_ln("STARTING MQTT");
+//     esp_mqtt_client_config_t mqttConfig = {
+//          .broker.address.uri = mqtt_uri,
+//          .task.stack_size = 1024*10, 
+//         .session.protocol_ver = MQTT_PROTOCOL_V_3_1_1,
+//         .network.disable_auto_reconnect = false,
+//         .credentials.username = mqtt_user,
+//         .credentials.authentication.password = mqtt_pass,
+//         .session.last_will.topic = "GVC/VM/00002",
+//         .session.last_will.msg = "i will leave",
+//         .session.last_will.msg_len = 12,
+//         .session.last_will.qos = 1,
+//         .session.last_will.retain = true,};
+    
+//     client = esp_mqtt_client_init(&mqttConfig);
+//     esp_mqtt_client_register_event(client, ESP_EVENT_ANY_ID, mqtt_event_handler, client);
+//     esp_mqtt_client_start(client);
+//     if(FirstTryMQTT== 1)
+//     {
+//     InitMqtt();
+//     }
+// }
 
 
 

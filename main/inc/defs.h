@@ -215,32 +215,30 @@ typedef enum TCPIP_SOCKET_STATE{
 //#define DEFAULT_FOTA_URL  "http://gvc.co.in/esp/esp_wifi_tcp_fota.bin"
 #define DEFAULT_FOTA_URL  "http://test-firmware.kwikpay.uk/firmware/fw070125_118.bin"
 //#define TCP_URL1  "gvc.co.in"
-#define TCP_URL1  "GVCTCP.KWIKPAY.COM"
-#define TCP_URL2  "GVCTCP.KWIKPAY.COM"
-#define TCP_URL3  "GVCTCP.KWIKPAY.COM"
+#define TCP_URL1  "gvcsystems.com"
+#define TCP_URL2  "gvcsystems.com"
+#define TCP_URL3  "gvcsystems.com"
 #define TCP_PORT1   6666
 #define TCP_PORT2   6666
 #define TCP_PORT3   6666
 
 // added on 090525
-#define MQTT_BROKER1  "mqtt://snackboss-iot.in:1883"
-#define MQTT_BROKER2  "mqtt://snackboss-iot.in:1883"
-#define MQTT_BROKER3  "mqtt://snackboss-iot.in:1883"
+#define MQTT_BROKER1  "mqtts://megavend.in:8883"
+#define MQTT_BROKER2  "mqtts://mqtt.provend.in:8883"
+#define MQTT_BROKER3  "mqtts://gvcsystems.com:8883"
 
-#define MQTT_USER1  "gvcMqttServer"
-#define MQTT_USER2  "gvcMqttServer"
-#define MQTT_USER3  "gvcMqttServer"
+#define MQTT_USER1  "megavend"
+#define MQTT_USER2  "provend_device"
+#define MQTT_USER3  "gvcsystems"
 
-#define MQTT_PASS1  ""
-#define MQTT_PASS2  ""
-#define MQTT_PASS3  ""
+#define MQTT_PASS1  "megavend@123"
+#define MQTT_PASS2  "prodmqttdevice"
+#define MQTT_PASS3  "vkbd@070361M"
 
 #define PASS_THRU   "Y"
 
-#define FWVersion "*KP-WAM - 081025A#"
-#define NumericFWVersion 134
-
-
+#define FWVersion "*KP-WAM - 020326#"
+#define NumericFWVersion 135
 
 
 #define HBTDelay    300000

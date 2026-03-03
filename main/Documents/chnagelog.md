@@ -1,3 +1,9 @@
+## 020326/030326
+-- chnaged tcp tp gvcsystems.com
+-- changed mqtt to gvcsystems.com
+-- esp-idf code added for mqttx
+-- backend/frontend yet to be changed for mqttx
+
 ## 081025
 -- 1 second delay added before GameRoutine in GameMode2
 
