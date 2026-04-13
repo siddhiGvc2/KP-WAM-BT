@@ -39,6 +39,7 @@ void UnpackGameMode (void)
 }
 void SendResponse(const char *Message,const char *OutputVia)
 {
+    ESP_LOGI(TAG, "Sending response %s via %s", Message, OutputVia);
     if(strcmp(OutputVia, "TCP") == 0)
     {
         sendSocketData(sock, Message, strlen(Message), 0);
@@ -187,12 +188,7 @@ if(strcmp(InputVia,"TCP")==0)
         ESP_LOGI(InputVia, "*%s#",FWVersion);
         SendResponse(FWVersion,InputVia);
         tx_event_pending = 1;
-        if (ledpin == 1)
-            gpio_set_level(L1, ledstatus);
-        if (ledpin == 2)
-            gpio_set_level(L2, ledstatus);
-        if (ledpin == 3)
-            gpio_set_level(L3, ledstatus);
+       
     }
     else if(strncmp(rx_buffer, "*URL?#", 6) == 0){
          sprintf(payload,"*URL,%s,%s,%s#",URLuserName,URLdateTime,FOTA_URL);

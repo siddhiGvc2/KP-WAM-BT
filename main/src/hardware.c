@@ -32,6 +32,8 @@
 
 static const char *TAG = "HW";
 static QueueHandle_t uart0_queue;
+static char uart_rx_packet_buf[256];
+static size_t uart_rx_packet_len = 0;
 
 void Out4094Byte (unsigned char);
 void gpio_read_n_act(void);
@@ -257,6 +259,31 @@ void RunGameMode2Check(void){
                             if (PinPressed == SelectedLEDNumber)
                             {
                                 OKSwitchPressedCount++;
+                                if ((OKSwitchPressedCount== Reward1))
+                                {
+                                    GiveReward();   
+                                    ESP_LOGI(TAG,"Reward 1 Given");
+                                    uart_write_string_ln("Reward 1 Given");
+                                }    
+                                if ((OKSwitchPressedCount== Reward2))
+                                {
+                                    GiveReward();   
+                                    ESP_LOGI(TAG,"Reward 2 Given");         
+                                    uart_write_string_ln("Reward 2 Given");
+                                }    
+                                if ((OKSwitchPressedCount== Reward3))
+                                {
+                                    GiveReward();   
+                                    ESP_LOGI(TAG,"Reward 3 Given");         
+                                    uart_write_string_ln("Reward 3 Given");
+                                }    
+                                if ((OKSwitchPressedCount== Reward4))
+                                {
+                                    GiveReward();   
+                                    ESP_LOGI(TAG,"Reward 4 Given");         
+                                    uart_write_string_ln("Reward 4 Given");
+                                    
+                                }    
                             }
                             else
                             {
@@ -340,10 +367,31 @@ static void uart_event_task(void *pvParameters)
                 other types of events. If we take too much time on data event, the queue might
                 be full.*/
                 case UART_DATA:{
-                    char arr[event.size + 1];
-                    uart_read_bytes(EX_UART_NUM, arr, event.size, portMAX_DELAY);
-                    arr[event.size] = '\0';
-                    process_uart_packet(arr);
+                    uint8_t arr[128];
+                    int len = uart_read_bytes(EX_UART_NUM, arr, sizeof(arr), pdMS_TO_TICKS(20));
+                    if (len > 0) {
+                        for (int i = 0; i < len; i++) {
+                            char c = (char)arr[i];
+
+                            // Ignore line endings and keep buffering until packet terminator '#'.
+                            if (c == '\r' || c == '\n') {
+                                continue;
+                            }
+
+                            if (uart_rx_packet_len < (sizeof(uart_rx_packet_buf) - 1)) {
+                                uart_rx_packet_buf[uart_rx_packet_len++] = c;
+                            } else {
+                                ESP_LOGW(TAG, "UART RX packet buffer overflow, resetting");
+                                uart_rx_packet_len = 0;
+                            }
+
+                            if (c == '#') {
+                                uart_rx_packet_buf[uart_rx_packet_len] = '\0';
+                                process_uart_packet(uart_rx_packet_buf);
+                                uart_rx_packet_len = 0;
+                            }
+                        }
+                    }
                     break;
                 }
                     
@@ -393,7 +441,7 @@ static void uart_event_task(void *pvParameters)
 
 void console_uart_init(void){
     uart_config_t uart_config = {
-        .baud_rate = 9600,
+        .baud_rate = 115200,
         .data_bits = UART_DATA_8_BITS,
         .parity = UART_PARITY_DISABLE,
         .stop_bits = UART_STOP_BITS_1,
@@ -401,9 +449,10 @@ void console_uart_init(void){
         .source_clk = UART_SCLK_DEFAULT,
     };
 
-    uart_driver_install(EX_UART_NUM, BUF_SIZE * 2, BUF_SIZE * 2, 20, &uart0_queue, 0);
-    uart_param_config(EX_UART_NUM, &uart_config);
-    uart_set_pin(MKM_IC_UART, MKM_IC_UART_TX, MKM_IC_UART_RX, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
+    ESP_ERROR_CHECK(uart_driver_install(EX_UART_NUM, BUF_SIZE * 2, BUF_SIZE * 2, 20, &uart0_queue, 0));
+    ESP_ERROR_CHECK(uart_param_config(EX_UART_NUM, &uart_config));
+    ESP_ERROR_CHECK(uart_set_pin(MKM_IC_UART, MKM_IC_UART_TX, MKM_IC_UART_RX, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE));
+    ESP_ERROR_CHECK(uart_set_rx_timeout(EX_UART_NUM, 2));
 //    uart_set_pin(EX_UART_NUM, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE, UART_PIN_NO_CHANGE);
     xTaskCreate(uart_event_task, "uart_event_task", 4096, NULL, 6, NULL);
 }
@@ -1074,4 +1123,14 @@ void BuzzerGameOver (void)
         blinkLEDNumber = LEDBUZZER;
         vTaskDelay(200/portTICK_PERIOD_MS);
     }    
+}
+
+
+void GiveReward (void)
+{
+        gpio_set_level(L1, 1);
+        vTaskDelay(1500/portTICK_PERIOD_MS);
+        gpio_set_level(L1, 0);
+        // blinkLEDNumber = LEDREWARD;
+        // BlinlLEDTime = 1500;
 }

@@ -217,7 +217,7 @@ size_t free_heap;
 size_t free_internal_heap;
 
  int RSSI;
-bool UartDebugInfo=false;
+bool UartDebugInfo=true;
 
 int LightTime;
 int PlayTime;
@@ -265,3 +265,4 @@ bool LightSettingModeChanged;
 
 int OTPValue;
 
+int Reward1,Reward2,Reward3,Reward4;

@@ -120,8 +120,12 @@ void app_main(void)
     //Initialize NVS
     //esp_log_level_set("*", ESP_LOG_NONE);
     // set totals to 0
+    Reward1 = 10;
+    Reward2 = 20;
+    Reward3 = 30;
+    Reward4 = 40;
 
-    NODEBUG = 1;    // no uart write string ln
+    NODEBUG = 0;    // no uart write string ln
     char payload[100];
     GameNegativeMarking = 1;
     GameOn = 0;
@@ -155,10 +159,7 @@ void app_main(void)
     utils_nvs_init();
     status_leds_init();
     console_uart_init();
-  
-    
-    if(UartDebugInfo)
-       uart_write_string(FWVersion);
+    uart_write_string(FWVersion);
     read_mac_address();
     xTaskCreate(tcpip_client_task, "tcpip_client_task", 1024 * 10, NULL, 12, NULL);
    

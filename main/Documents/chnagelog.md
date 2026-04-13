@@ -1,3 +1,10 @@
+## 100426
+-- add pulse when score cross a preset level
+-- add one command to set and get level
+-- *REWARD:50,100,150,200#
+-- vend reward at 50,100,150,200
+--
+
 ## 020326/030326
 -- chnaged tcp tp gvcsystems.com
 -- changed mqtt to gvcsystems.com

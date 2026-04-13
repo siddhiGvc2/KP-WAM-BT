@@ -268,6 +268,7 @@ extern bool LightTimeModeChanged;
 extern bool LightSettingModeChanged;
 
 extern int OTPValue;
+extern int Reward1,Reward2,Reward3,Reward4;
 
 
 

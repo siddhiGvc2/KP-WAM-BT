@@ -91,8 +91,8 @@ typedef enum TCPIP_SOCKET_STATE{
 #define NVS_CASH6_KEY   "CASH6"
 #define NVS_CASH7_KEY   "CASH7"
 
-#define DEFAULT_SSID1  "GVCSYS1"
-#define DEFAULT_PASS1  "GVC3065V"
+#define DEFAULT_SSID1  "Airtel_GVCSYS1"
+#define DEFAULT_PASS1  "vkbd@070361A"
 #define DEFAULT_SSID2  "GVCSYS2"
 #define DEFAULT_PASS2  "GVC3065V"
 #define DEFAULT_SSID3  "GVCSYS3"
@@ -223,22 +223,22 @@ typedef enum TCPIP_SOCKET_STATE{
 #define TCP_PORT3   6666
 
 // added on 090525
-#define MQTT_BROKER1  "mqtts://megavend.in:8883"
-#define MQTT_BROKER2  "mqtts://mqtt.provend.in:8883"
+#define MQTT_BROKER1  "mqtts://gvcsystems.com:8883"
+#define MQTT_BROKER2  "mqtts://gvcsystems.com:8883"
 #define MQTT_BROKER3  "mqtts://gvcsystems.com:8883"
 
-#define MQTT_USER1  "megavend"
-#define MQTT_USER2  "provend_device"
+#define MQTT_USER1  "gvcsystems"
+#define MQTT_USER2  "gvcsystems"
 #define MQTT_USER3  "gvcsystems"
 
-#define MQTT_PASS1  "megavend@123"
-#define MQTT_PASS2  "prodmqttdevice"
+#define MQTT_PASS1  "vkbd@070361M"
+#define MQTT_PASS2  "vkbd@070361M"
 #define MQTT_PASS3  "vkbd@070361M"
 
 #define PASS_THRU   "Y"
 
-#define FWVersion "*KP-WAM - 020326#"
-#define NumericFWVersion 135
+#define FWVersion "*KP-WAM - 100426#"
+#define NumericFWVersion 136
 
 
 #define HBTDelay    300000
@@ -277,6 +277,7 @@ typedef enum TCPIP_SOCKET_STATE{
 #define LedHBT  L1
 #define LedTCP  L2
 #define LEDBUZZER  3
+#define LEDREWARD 1
 
 #define SDA     21
 #define SCL     22

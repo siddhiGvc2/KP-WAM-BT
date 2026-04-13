@@ -133,3 +133,5 @@ extern void DisplayMaxLights(void);
 
 extern void DisplayOTP (void);
 extern void DisplayNormal (void);
+
+extern void GiveReward (void);
