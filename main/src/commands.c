@@ -120,10 +120,26 @@ if(strcmp(InputVia,"TCP")==0)
         }
     }
 
+
+
+
     if(strncmp(rx_buffer, "*CA?#", 5) == 0){
         sprintf(payload,"*CA-OK,%s,%s,%d,%d#",CAuserName,CAdateTime,pulseWitdh,SignalPolarity);
         SendResponse(payload,InputVia);
         tx_event_pending = 1;
+    }
+    else if(strncmp(rx_buffer, "*REWARD?#", 9) == 0)
+    {
+        sprintf(payload,"*REWARD-OK,%d,%d,%d,%d#",Reward1,Reward2,Reward3,Reward4);
+        SendResponse(payload,InputVia);
+        tx_event_pending = 1;
+    }
+    else if (strncmp(rx_buffer, "*REWARD:", 8) == 0)
+    {
+        sscanf(rx_buffer, "*REWARD:%d,%d,%d,%d#", &Reward1, &Reward2, &Reward3, &Reward4);
+            sprintf(payload,"*REWARD-SET-OK,%d,%d,%d,%d#",Reward1,Reward2,Reward3,Reward4);
+            SendResponse(payload,InputVia);
+            tx_event_pending = 1;
     }
     else if(strncmp(rx_buffer, "*PT?#", 5) == 0){
         sprintf(payload, "*PT,%s,%s,%s#",PTuserName,PTdateTime,PassThruValue); //actual when in production

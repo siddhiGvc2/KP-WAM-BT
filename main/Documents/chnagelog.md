@@ -1,3 +1,7 @@
+## 130426
+-- add command *REWARD?#
+-- and command *REWARD:10:20:30:40#
+
 ## 100426
 -- add pulse when score cross a preset level
 -- add one command to set and get level
