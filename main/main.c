@@ -131,7 +131,7 @@ void app_main(void)
     GameOn = 0;
     GameOnTimeOn = 0;
     blinkLEDNumber = 0;
-    MQTTRequired = 1;
+    MQTTRequired = 0;
     TCPRequired = 1;
     FirstTryMQTT = 1;
     FirstPowerOn = 1;
@@ -204,8 +204,8 @@ void app_main(void)
     
     xTaskCreate(sendHBT, "sendHBT", 4096, NULL, 6, NULL);
    
-    // removed on 10-05-25
-    // xTaskCreate(RetryMqtt, "RetryMqtt", 2048, NULL, 6, NULL);
+    // removed on 10-05-25. 
+   //  xTaskCreate(RetryMqtt, "RetryMqtt", 2048, NULL, 6, NULL);
   
    // Create monitor task
    // xTaskCreate(hbt_monitor_task, "hbt_monitor_task", 2048, NULL, 5, NULL);

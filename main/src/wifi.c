@@ -140,6 +140,7 @@ void event_handler(void* arg, esp_event_base_t event_base,
             FirstWiFiConnection = 1;
             connected_to_wifi_and_internet = true;
               connected_to_wifi = true;
+              GetCurrentDateTime();
  
     }    
     

@@ -128,6 +128,13 @@ if(strcmp(InputVia,"TCP")==0)
         SendResponse(payload,InputVia);
         tx_event_pending = 1;
     }
+
+    if(strncmp(rx_buffer, "*MQTT?#", 7) == 0){
+        sprintf(payload,"*MQTT = %d, WiFi = %d#", MQTT_CONNEECTED, connected_to_wifi);
+        SendResponse(payload,InputVia);
+        tx_event_pending = 1;
+    }
+
     else if(strncmp(rx_buffer, "*REWARD?#", 9) == 0)
     {
         sprintf(payload,"*REWARD-OK,%d,%d,%d,%d#",Reward1,Reward2,Reward3,Reward4);

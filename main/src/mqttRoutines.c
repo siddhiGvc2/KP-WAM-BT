@@ -287,6 +287,7 @@ const char *ca_cert;
 
 void mqtt_app_start (void)
 {
+    MipNumber = 3; // default to GVC. This will be updated when MQTT connection is successful and MipNumber is received from server
     if(MipNumber==3) {
     ca_cert = (const char *)ca_gvc_pem_start;
     } 
@@ -308,6 +309,7 @@ void mqtt_app_start (void)
         {
             .username = mqtt_user,
             .authentication.password = mqtt_pass,
+            .client_id = SerialNumber,
         },
         .broker.verification.certificate = (const char *)ca_cert,
     };

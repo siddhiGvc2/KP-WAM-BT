@@ -137,3 +137,5 @@ extern void DisplayNormal (void);
 extern void GiveReward (void);
 
 extern void SaveRewards (void);
+
+extern void GetCurrentDateTime(void);

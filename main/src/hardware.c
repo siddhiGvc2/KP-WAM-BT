@@ -26,6 +26,9 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <time.h>
+#include <sys/time.h>
+#include "esp_sntp.h"
 
 #include "externVars.h"
 #include "calls.h"
@@ -1168,4 +1171,36 @@ void GiveReward (void)
         // vTaskDelay(1500/portTICK_PERIOD_MS);
         // gpio_set_level(L1, 0);
         BlinkLEDTime[LEDREWARD] = 15;
+}
+
+void GetCurrentDateTime (void)
+{
+     // 1. Configure SNTP
+    sntp_setoperatingmode(SNTP_OPMODE_POLL);
+    sntp_setservername(0, "pool.ntp.org");
+    sntp_init();
+
+    // 2. Variables required
+    time_t now = 0;              // stores current time in seconds
+    struct tm timeinfo = { 0 };  // broken-down time structure
+
+    int retry = 0;
+    const int retry_count = 10;
+
+    // 3. Wait until time is set
+    while (timeinfo.tm_year < (2020 - 1900) && ++retry < retry_count) {
+        ESP_LOGI(TAG, "Waiting for system time to be set... (%d/%d)", retry, retry_count);
+
+        vTaskDelay(pdMS_TO_TICKS(2000));
+
+        time(&now);                         // get current time
+        localtime_r(&now, &timeinfo);       // convert to struct tm
+    }
+
+    if (retry == retry_count) {
+        ESP_LOGW(TAG, "Failed to get time from SNTP");
+    } else {
+        ESP_LOGI(TAG, "Time synchronized successfully");
+        ESP_LOGI(TAG, "Year: %d", timeinfo.tm_year + 1900);
+    }
 }

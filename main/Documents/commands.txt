@@ -1,3 +1,8 @@
+# 130426
+*REWARD?#
+*REWARD:10:20:30:40#
+*MQTT?#
+
 # 250925
 *OTP:abcd#
 *RESUME#
