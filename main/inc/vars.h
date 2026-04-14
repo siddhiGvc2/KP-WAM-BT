@@ -225,7 +225,7 @@ int NumberOfLights;
 int Ticks = 0;
 
 // WAM
-unsigned int BlinlLEDTime;
+unsigned int BlinkLEDTime[10];
 unsigned int OKSwitchPressedCount,NoSwitchPressedCount,WrongSwitchPressedCount;
 unsigned int PinPressed = 0;
 bool GameOn,GameOnTimeOn;

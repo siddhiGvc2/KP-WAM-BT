@@ -1,3 +1,6 @@
+## 140426
+-- modified BLINKLED routine
+
 ## 130426
 -- add command *REWARD?#
 -- and command *REWARD:10:20:30:40#

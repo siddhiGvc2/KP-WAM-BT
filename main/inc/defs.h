@@ -69,6 +69,11 @@ typedef enum TCPIP_SOCKET_STATE{
 #define NVS_SSID_3_KEY        "SSID3"
 #define NVS_PASS_3_KEY        "PASS3"
 
+#define NVS_REWARD1_KEY        "REWARD1"
+#define NVS_REWARD2_KEY        "REWARD2"        
+#define NVS_REWARD3_KEY        "REWARD3"
+#define NVS_REWARD4_KEY        "REWARD4"
+
 
 
 #define NVS_GAME_MODE "GAMEMODE"
@@ -213,7 +218,7 @@ typedef enum TCPIP_SOCKET_STATE{
 // #define DEFAULT_SERVER_IP_ADDR "159.89.248.57"
 #define DEFAULT_SERVER_PORT    6666
 //#define DEFAULT_FOTA_URL  "http://gvc.co.in/esp/esp_wifi_tcp_fota.bin"
-#define DEFAULT_FOTA_URL  "http://test-firmware.kwikpay.uk/firmware/fw070125_118.bin"
+#define DEFAULT_FOTA_URL  "http://gvcsystems.com/KPWAM/kpwam.bin"
 //#define TCP_URL1  "gvc.co.in"
 #define TCP_URL1  "gvcsystems.com"
 #define TCP_URL2  "gvcsystems.com"
@@ -237,8 +242,8 @@ typedef enum TCPIP_SOCKET_STATE{
 
 #define PASS_THRU   "Y"
 
-#define FWVersion "*KP-WAM - 100426#"
-#define NumericFWVersion 136
+#define FWVersion "*WAM-137-140426#"
+#define NumericFWVersion 137
 
 
 #define HBTDelay    300000
@@ -333,3 +338,6 @@ typedef enum TCPIP_SOCKET_STATE{
 #define MaximumNumberOfLights 8
 
 #define MaximumSettingNumber 8
+
+#define BeepTime 2
+#define LongBeepTime 8

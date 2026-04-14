@@ -228,7 +228,7 @@ extern int NumberOfLights;
 extern int Ticks;
 
 // WAM
-extern unsigned int BlinlLEDTime;
+extern unsigned int BlinkLEDTime[10];
 extern unsigned int OKSwitchPressedCount,NoSwitchPressedCount,WrongSwitchPressedCount;
 extern unsigned int PinPressed;
 extern bool GameOn,GameOnTimeOn;

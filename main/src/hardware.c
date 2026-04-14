@@ -196,7 +196,8 @@ void RunGameMode2Check(void){
  
     if(MemorySequence[GameMode2Index]==PinPressed)
     {
-        blinkLEDNumber = LEDBUZZER; // beep if correct switch pressed
+        // blinkLEDNumber = LEDBUZZER; // beep if correct switch pressed
+        BlinkLEDTime[LEDBUZZER] = BeepTime;
         OKSwitchPressedCount++;
         GameMode2Index++;
         Out4094(PinPressed);
@@ -317,7 +318,8 @@ void RunGameMode2Check(void){
 void RunGameMode0 (void)
 {
                             KeysPressed++;
-                            blinkLEDNumber = LEDBUZZER; // been when any key is pressed
+                            // blinkLEDNumber = LEDBUZZER; // been when any key is pressed
+                            BlinkLEDTime[LEDBUZZER] = BeepTime;
                             SwitchPressedTime = millis();
                             TimeToRespond = (SwitchPressedTime-LightOnTime)/100;
                             TotalTimeToRespond = TotalTimeToRespond + TimeToRespond;
@@ -509,7 +511,8 @@ void SwitchOnNextLight (void)
     SelectedLEDNumber = y;
     Out4094(y);
     LightOnTime = millis(); // get start time
-    blinkLEDNumber = LEDBUZZER;
+  //  blinkLEDNumber = LEDBUZZER;
+    BlinkLEDTime[LEDBUZZER] = BeepTime;
 }
 void gpio_read_n_act(void)
 {
@@ -824,40 +827,72 @@ void Out4094 (unsigned char value)
             //     ESP_LOGI("OUT4094","End Pulse %d is %lu",edges,xTaskGetTickCount());
             // }
 
-// blink LED as per number - set led on, wait, led off, clear led number
+
 void BlinkLED (void)
 {
-    char payload[100];
-    for (;;)
+    while(1)
     {
-        if (blinkLEDNumber>0)
+        if (BlinkLEDTime[0] == 0)
+            gpio_set_level(L1, 0);
+        else
         {
-            PinPressed = 0;
-            if (blinkLEDNumber==1)
-            {
-                gpio_set_level(L1, 1);
-                vTaskDelay(BlinlLEDTime/portTICK_PERIOD_MS);
-                gpio_set_level(L1, 0);
-                blinkLEDNumber = 0;
-            }
-            if (blinkLEDNumber==2)
-            {
-                gpio_set_level(L2, 1);
-                vTaskDelay(BlinlLEDTime/portTICK_PERIOD_MS);
-                gpio_set_level(L2, 0);
-                blinkLEDNumber = 0;
-            }
-            if (blinkLEDNumber==3)
-            {
-                gpio_set_level(L3, 1);
-                vTaskDelay(BlinlLEDTime/portTICK_PERIOD_MS);
-                gpio_set_level(L3, 0);
-                blinkLEDNumber = 0;
-            }
+            gpio_set_level(L1, 1);
+            BlinkLEDTime[0]--;
+        }
+
+        if (BlinkLEDTime[1] == 0)
+            gpio_set_level(L2, 0);
+        else
+        {
+            gpio_set_level(L2, 1);
+            BlinkLEDTime[1]--;
+        }
+
+        if (BlinkLEDTime[2] == 0)
+            gpio_set_level(L3, 0);
+        else
+        {
+            gpio_set_level(L3, 1);
+            BlinkLEDTime[2]--;
         }
         vTaskDelay(100/portTICK_PERIOD_MS);
     }
 }
+
+// // blink LED as per number - set led on, wait, led off, clear led number
+// void BlinkLED (void)
+// {
+//     char payload[100];
+//     for (;;)
+//     {
+//         if (blinkLEDNumber>0)
+//         {
+//             PinPressed = 0;
+//             if (blinkLEDNumber==1)
+//             {
+//                 gpio_set_level(L1, 1);
+//                 vTaskDelay(BlinlLEDTime/portTICK_PERIOD_MS);
+//                 gpio_set_level(L1, 0);
+//                 blinkLEDNumber = 0;
+//             }
+//             if (blinkLEDNumber==2)
+//             {
+//                 gpio_set_level(L2, 1);
+//                 vTaskDelay(BlinlLEDTime/portTICK_PERIOD_MS);
+//                 gpio_set_level(L2, 0);
+//                 blinkLEDNumber = 0;
+//             }
+//             if (blinkLEDNumber==3)
+//             {
+//                 gpio_set_level(L3, 1);
+//                 vTaskDelay(BlinlLEDTime/portTICK_PERIOD_MS);
+//                 gpio_set_level(L3, 0);
+//                 blinkLEDNumber = 0;
+//             }
+//         }
+//         vTaskDelay(100/portTICK_PERIOD_MS);
+//     }
+// }
 
 
 void GeneratePulsesInBackGround (void)
@@ -1120,7 +1155,8 @@ void BuzzerGameOver (void)
 {
     for (int i = 0 ; i < 5 ; i++)
     {
-        blinkLEDNumber = LEDBUZZER;
+        // blinkLEDNumber = LEDBUZZER;
+        BlinkLEDTime[LEDBUZZER] = LongBeepTime;
         vTaskDelay(200/portTICK_PERIOD_MS);
     }    
 }
@@ -1128,9 +1164,8 @@ void BuzzerGameOver (void)
 
 void GiveReward (void)
 {
-        gpio_set_level(L1, 1);
-        vTaskDelay(1500/portTICK_PERIOD_MS);
-        gpio_set_level(L1, 0);
-        // blinkLEDNumber = LEDREWARD;
-        // BlinlLEDTime = 1500;
+        // gpio_set_level(L1, 1);
+        // vTaskDelay(1500/portTICK_PERIOD_MS);
+        // gpio_set_level(L1, 0);
+        BlinkLEDTime[LEDREWARD] = 15;
 }

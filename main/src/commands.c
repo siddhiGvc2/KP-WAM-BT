@@ -136,10 +136,11 @@ if(strcmp(InputVia,"TCP")==0)
     }
     else if (strncmp(rx_buffer, "*REWARD:", 8) == 0)
     {
-        sscanf(rx_buffer, "*REWARD:%d,%d,%d,%d#", &Reward1, &Reward2, &Reward3, &Reward4);
+        sscanf(rx_buffer, "*REWARD:%d:%d:%d:%d#", &Reward1, &Reward2, &Reward3, &Reward4);
             sprintf(payload,"*REWARD-SET-OK,%d,%d,%d,%d#",Reward1,Reward2,Reward3,Reward4);
             SendResponse(payload,InputVia);
             tx_event_pending = 1;
+            SaveRewards();
     }
     else if(strncmp(rx_buffer, "*PT?#", 5) == 0){
         sprintf(payload, "*PT,%s,%s,%s#",PTuserName,PTdateTime,PassThruValue); //actual when in production
@@ -1199,7 +1200,7 @@ if(strcmp(InputVia,"TCP")==0)
         sscanf(rx_buffer, "*LTime:%d#",&LightTime);
         utils_nvs_set_int(NVS_LIGHT_TIME,LightTime);
         sprintf(payload, "*LTime-OK,%d#",LightTime);
-        BlinlLEDTime = 10 * LightTime;
+        //BlinlLEDTime = 10 * LightTime;
         SendResponse(payload,InputVia); 
     }
        else if(strncmp(rx_buffer,"*PTime:",7)==0)

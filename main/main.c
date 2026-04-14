@@ -197,7 +197,7 @@ void app_main(void)
       xTaskCreate(BlinkLED, "BlinkLED", 2048, NULL, 6, NULL);
     wifi_init_sta();
     ESP_LOGI(TAG, "*Testing RGB #");
-    TestRGB();
+   // TestRGB();
 
     last_hbt_time_us = esp_timer_get_time(); // Init with current time
 

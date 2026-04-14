@@ -107,7 +107,47 @@ void load_settings_nvs(){
       else{
         SoundMode=0;
       }
+
+
+      if(utils_nvs_get_int(NVS_REWARD1_KEY,&Reward1) == ESP_OK){
+        utils_nvs_get_int(NVS_REWARD1_KEY,&Reward1);
+        ESP_LOGI(TAG,"REWARD1 %d is ",Reward1);
+      }
+      else
+      {
+          Reward1=10;
+      }
       
+      if(utils_nvs_get_int(NVS_REWARD2_KEY,&Reward2) == ESP_OK){
+        utils_nvs_get_int(NVS_REWARD2_KEY,&Reward2);
+        ESP_LOGI(TAG,"REWARD2 %d is ",Reward2);
+      }
+      else
+      {
+          Reward2=20;
+      }
+
+      if(utils_nvs_get_int(NVS_REWARD3_KEY,&Reward3) == ESP_OK){
+        utils_nvs_get_int(NVS_REWARD3_KEY,&Reward3);
+        ESP_LOGI(TAG,"REWARD3 %d is ",Reward3);
+      }
+      else
+      {
+          Reward3=30;
+      }
+
+      if(utils_nvs_get_int(NVS_REWARD4_KEY,&Reward4) == ESP_OK){
+        utils_nvs_get_int(NVS_REWARD4_KEY,&Reward4);
+        ESP_LOGI(TAG,"REWARD4 %d is ",Reward4);
+      }
+      else
+      {
+          Reward4=40;
+      }
+
+
+
+
        if(utils_nvs_get_int(NVS_MAXGAMES,&max_count) == ESP_OK){
         utils_nvs_get_int(NVS_MAXGAMES,&max_count);
         ESP_LOGI(TAG,"MAX COUNT %D is ",max_count);
@@ -148,13 +188,13 @@ void load_settings_nvs(){
 
        if(utils_nvs_get_int(NVS_LIGHT_TIME,&LightTime) == ESP_OK){
         utils_nvs_get_int(NVS_LIGHT_TIME,&LightTime);
-        BlinlLEDTime = 10 * LightTime;
+       // BlinlLEDTime = 10 * LightTime;
        
       }
       else
       {
         LightTime = 10;
-        BlinlLEDTime = 10 * LightTime;
+        //BlinlLEDTime = 10 * LightTime;
       }
 
 
@@ -659,7 +699,12 @@ void load_settings_nvs(){
         pulseWitdh = 100;
         ESP_LOGI(TAG, "Default CA Values %d - %d", pulseWitdh,SignalPolarity);
     }
+}
 
-
-
+void SaveRewards (void)
+{
+            utils_nvs_set_int(NVS_REWARD1_KEY,Reward1);
+            utils_nvs_set_int(NVS_REWARD2_KEY,Reward2);
+            utils_nvs_set_int(NVS_REWARD3_KEY,Reward3);
+            utils_nvs_set_int(NVS_REWARD4_KEY,Reward4);
 }
